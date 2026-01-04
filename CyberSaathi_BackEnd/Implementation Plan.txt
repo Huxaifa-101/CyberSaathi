@@ -1,0 +1,456 @@
+# 🇵🇰 Pakistani Cyber Law Chatbot - Implementation Plan
+
+**Project Name:** PakCyberLaw-Chatbot  
+**Based On:** DASH Course Advisor Architecture  
+**Database:** PostgreSQL with pgvector extension  
+**Purpose:** RAG-based chatbot for Pakistani cybercrime laws and regulations
+
+---
+
+## 📋 Project Overview
+
+### **Architecture**
+Same as DASH, but with PostgreSQL instead of ChromaDB:
+
+```
+User Query → Router → [Law Retrieval OR Web Search] → LLM Generation → Answer
+```
+
+### **Key Differences from DASH**
+
+| Component | DASH | Cyber Law Bot |
+|-----------|------|---------------|
+| **Vector Store** | ChromaDB | PostgreSQL + pgvector |
+| **Documents** | Course catalogs (.docx) | Cyber law docs (.pdf, .docx) |
+| **Domain** | University courses | Pakistani cyber laws |
+| **Updates** | Manual re-indexing | Regular upload pipeline |
+| **Retrieval** | File-based | Database-based with metadata |
+
+---
+
+## 🗂️ Project Structure
+
+```
+PakCyberLaw-Chatbot/
+├── .env                          # API keys & PostgreSQL credentials
+├── .env.example                  # Template
+├── .gitignore
+├── requirements.txt              # Dependencies
+├── config.py                     # Centralized configuration
+├── api.py                        # FastAPI REST endpoint
+├── index_documents.py            # Bulk document indexing
+├── manage_documents.py           # Add/update/delete individual docs
+├── retriever_test.py             # Test retrieval
+├── README.md
+├── setup_postgres.sql            # Database schema
+├── data/
+│   ├── raw/                      # Upload PDFs/DOCX here
+│   │   ├── PECA_2016.pdf
+│   │   ├── Cybercrime_Rules_2018.pdf
+│   │   └── ...
+│   └── processed/                # Metadata tracking
+├── agent/
+│   ├── __init__.py
+│   └── agent_graph.py           # LangGraph routing logic
+└── tools/
+    ├── __init__.py
+    ├── law_retriever.py         # PostgreSQL vector retrieval
+    └── web_search.py            # Tavily web search
+```
+
+---
+
+## 🔧 Setup Instructions
+
+### **Step 1: PostgreSQL Setup**
+
+#### 1.1 Install pgvector Extension
+
+```powershell
+# Connect to PostgreSQL
+psql -U postgres
+
+# Install pgvector (if not already installed)
+# Download from: https://github.com/pgvector/pgvector
+```
+
+#### 1.2 Create Database and Tables
+
+```sql
+-- Create database
+CREATE DATABASE pak_cyberlaw_db;
+
+-- Connect to database
+\c pak_cyberlaw_db;
+
+-- Enable pgvector extension
+CREATE EXTENSION IF NOT EXISTS vector;
+
+-- Create tables (see setup_postgres.sql for full schema)
+```
+
+### **Step 2: Python Environment**
+
+```powershell
+# Create virtual environment
+python -m venv venv
+.\venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### **Step 3: Configuration**
+
+Create `.env` file:
+
+```env
+# API Keys
+GOOGLE_API_KEY=your_gemini_api_key
+TAVILY_API_KEY=your_tavily_api_key
+
+# PostgreSQL Configuration
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=pak_cyberlaw_db
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_password
+
+# Embedding Model
+EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+EMBEDDING_DIMENSION=384
+
+# Retrieval Configuration
+RETRIEVAL_K=10
+CHUNK_SIZE=1000
+CHUNK_OVERLAP=200
+
+# LLM Configuration
+LLM_MODEL=gemini-2.0-flash-exp
+LLM_TEMPERATURE=0
+
+# Logging
+LOG_LEVEL=INFO
+```
+
+### **Step 4: Index Documents**
+
+```powershell
+# Place your cyber law PDFs in data/raw/
+# Then run indexing script
+python index_documents.py
+```
+
+### **Step 5: Start API**
+
+```powershell
+uvicorn api:api --reload --host 0.0.0.0 --port 8000
+```
+
+---
+
+## 📊 Database Schema
+
+### **Table: law_documents**
+Stores chunked documents with embeddings
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | SERIAL | Primary key |
+| document_name | VARCHAR(500) | Source document name |
+| document_type | VARCHAR(50) | pdf, docx, txt |
+| chunk_text | TEXT | Actual text chunk |
+| chunk_index | INTEGER | Position in document |
+| metadata | JSONB | Custom metadata (category, date, etc.) |
+| embedding | vector(384) | Vector embedding |
+| created_at | TIMESTAMP | Creation timestamp |
+| updated_at | TIMESTAMP | Last update timestamp |
+
+### **Table: document_registry**
+Tracks uploaded documents
+
+| Column | Type | Description |
+|--------|------|-------------|
+| id | SERIAL | Primary key |
+| document_name | VARCHAR(500) | Unique document name |
+| file_path | TEXT | Path to original file |
+| file_hash | VARCHAR(64) | SHA-256 hash for change detection |
+| document_type | VARCHAR(50) | File type |
+| total_chunks | INTEGER | Number of chunks created |
+| upload_date | TIMESTAMP | First upload |
+| last_updated | TIMESTAMP | Last modification |
+| status | VARCHAR(50) | active, archived, deleted |
+| metadata | JSONB | Custom metadata |
+
+---
+
+## 🔄 Data Pipeline
+
+### **Document Upload Flow**
+
+```
+1. Upload PDF/DOCX to data/raw/
+2. Run index_documents.py or manage_documents.py
+3. System:
+   a. Calculates file hash
+   b. Checks if document exists (hash comparison)
+   c. If new/changed:
+      - Loads document
+      - Splits into chunks
+      - Generates embeddings
+      - Stores in PostgreSQL
+      - Updates document_registry
+   d. If unchanged: Skip
+4. Document ready for retrieval
+```
+
+### **Regular Updates**
+
+```powershell
+# Add new document
+python manage_documents.py --add data/raw/new_law.pdf
+
+# Update existing document
+python manage_documents.py --update data/raw/updated_law.pdf
+
+# Delete document
+python manage_documents.py --delete "PECA_2016.pdf"
+
+# Re-index all
+python index_documents.py --force
+```
+
+---
+
+## 🛠️ Key Components
+
+### **1. config.py**
+Centralized configuration (same as DASH)
+
+```python
+class Config:
+    # PostgreSQL
+    POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
+    POSTGRES_PORT = int(os.getenv("POSTGRES_PORT", 5432))
+    POSTGRES_DB = os.getenv("POSTGRES_DB", "pak_cyberlaw_db")
+    POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
+    POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+    
+    # Connection string
+    DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+```
+
+### **2. law_retriever.py**
+PostgreSQL vector retrieval
+
+```python
+from langchain_community.vectorstores import PGVector
+from langchain_huggingface import HuggingFaceEmbeddings
+
+def get_law_retriever(k: int = 10):
+    embeddings = HuggingFaceEmbeddings(
+        model_name=Config.EMBEDDING_MODEL
+    )
+    
+    vectorstore = PGVector(
+        connection_string=Config.DATABASE_URL,
+        embedding_function=embeddings,
+        collection_name="law_documents"
+    )
+    
+    return vectorstore.as_retriever(search_kwargs={"k": k})
+```
+
+### **3. agent_graph.py**
+Same LangGraph structure as DASH
+
+```python
+# Router: Classify as 'law' or 'web'
+# Law Node: Retrieve from PostgreSQL
+# Web Node: Search via Tavily
+# Generation Node: Generate answer with Gemini
+```
+
+### **4. index_documents.py**
+Bulk document indexing
+
+```python
+# Load all PDFs/DOCX from data/raw/
+# Split into chunks
+# Generate embeddings
+# Store in PostgreSQL with metadata
+# Update document_registry
+```
+
+### **5. manage_documents.py**
+Individual document management
+
+```python
+# Commands:
+# --add: Add new document
+# --update: Update existing document
+# --delete: Remove document
+# --list: Show all documents
+# --stats: Show statistics
+```
+
+---
+
+## 📚 Dependencies (requirements.txt)
+
+```txt
+# Core
+langchain==0.3.13
+langchain-community==0.3.13
+langchain-google-genai==2.0.8
+langgraph==0.2.60
+langchain-huggingface==0.1.2
+
+# Vector Store
+pgvector==0.3.6
+psycopg2-binary==2.9.10
+
+# Document Loaders
+pypdf==5.1.0
+docx2txt==0.8
+python-docx==1.1.2
+
+# API
+fastapi==0.115.6
+uvicorn==0.34.0
+pydantic==2.10.4
+
+# Search
+tavily-python==0.5.0
+
+# Utilities
+python-dotenv==1.0.1
+sentence-transformers==3.3.1
+```
+
+---
+
+## 🎯 Usage Examples
+
+### **API Request**
+
+```bash
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What are the penalties for unauthorized access under PECA 2016?"
+  }'
+```
+
+### **Response**
+
+```json
+{
+  "answer": "Under Section 3 of PECA 2016, unauthorized access to a computer system is punishable by imprisonment up to 3 years or a fine up to Rs. 500,000, or both.",
+  "context": [
+    "Section 3 - Unauthorized access to information system...",
+    "..."
+  ],
+  "source_tool": "law"
+}
+```
+
+---
+
+## 🔍 Advanced Features
+
+### **Metadata Filtering**
+
+```python
+# Retrieve only from specific law
+retriever.search(
+    query="penalties",
+    filter={"document_name": "PECA_2016.pdf"}
+)
+
+# Retrieve by category
+retriever.search(
+    query="data protection",
+    filter={"metadata.category": "privacy"}
+)
+```
+
+### **Hybrid Search**
+
+```python
+# Combine vector similarity + keyword search
+# Use PostgreSQL full-text search + pgvector
+```
+
+---
+
+## 📈 Monitoring & Maintenance
+
+### **Database Queries**
+
+```sql
+-- Check document count
+SELECT COUNT(*) FROM law_documents;
+
+-- View document statistics
+SELECT * FROM document_stats;
+
+-- Find documents needing update
+SELECT * FROM document_registry 
+WHERE last_updated < NOW() - INTERVAL '30 days';
+
+-- Check storage size
+SELECT pg_size_pretty(pg_total_relation_size('law_documents'));
+```
+
+### **Performance Optimization**
+
+```sql
+-- Vacuum and analyze
+VACUUM ANALYZE law_documents;
+
+-- Rebuild index
+REINDEX INDEX law_documents_embedding_idx;
+```
+
+---
+
+## 🚀 Deployment Checklist
+
+- [ ] PostgreSQL installed with pgvector
+- [ ] Database created and schema applied
+- [ ] Environment variables configured
+- [ ] Dependencies installed
+- [ ] Documents indexed
+- [ ] API tested locally
+- [ ] Error handling verified
+- [ ] Logging configured
+- [ ] Backup strategy in place
+
+---
+
+## 📝 Sample Documents to Include
+
+1. **PECA 2016** - Prevention of Electronic Crimes Act
+2. **Cybercrime Rules 2018**
+3. **Data Protection Act (if applicable)**
+4. **IT Policy Documents**
+5. **Case Law Summaries**
+6. **FIA Cybercrime Guidelines**
+7. **SECP Regulations**
+8. **PTA Regulations**
+
+---
+
+## 🎓 Next Steps
+
+1. **Create project folder** (outside DASH or as separate workspace)
+2. **Set up PostgreSQL** with pgvector
+3. **Create all Python files** based on DASH structure
+4. **Adapt code** for PostgreSQL instead of ChromaDB
+5. **Test with sample documents**
+6. **Deploy and iterate**
+
+---
+
+**Ready to implement? Let me know where you want to create the project folder, and I'll generate all the code files!**

@@ -1,0 +1,87 @@
+PREVENTION OF ELECTRONIC CRIMES ACT, 2016
+(Sample Document for Testing)
+
+CHAPTER I - PRELIMINARY
+
+Section 1: Short title, extent and commencement
+(1) This Act may be called the Prevention of Electronic Crimes Act, 2016.
+(2) It extends to the whole of Pakistan and applies to every citizen of Pakistan wherever he may be, and to every other person for the time being in Pakistan.
+(3) It shall come into force at once.
+
+Section 2: Definitions
+In this Act, unless there is anything repugnant in the subject or context:
+
+(a) "access" means gaining entry into, instructing, communicating with, storing data in, retrieving data from, or otherwise making use of any of the resources of an information system or a computer network;
+
+(b) "authorized" means having the consent or permission of the owner or other person authorized by the owner to give such consent or permission to access an information system;
+
+(c) "computer" means an electronic, magnetic, optical, electrochemical, or other data processing device, or a group of such interconnected or related devices, performing logical, arithmetic, or storage functions;
+
+(d) "computer network" means the interconnection of one or more computers or computer systems or communication devices through the use of satellite, microwave, line, or other communication media and terminals or a complex consisting of two or more interconnected computers or computer systems or communication devices whether or not the interconnection is continuously maintained;
+
+(e) "computer system" means a device or collection of devices, including input and output devices, capable of being used in conjunction with external files, which contain computer programs, electronic instructions, input data and output data, that performs logic, arithmetic, data storage and retrieval, communication control and other functions;
+
+CHAPTER II - OFFENCES
+
+Section 3: Unauthorized access to information system
+(1) Whoever, with intent to cause damage or knowing that he is likely to cause damage, accesses any information system without authorization or in excess of authorization is said to commit the offence of unauthorized access to information system.
+
+(2) Whoever commits the offence under sub-section (1) shall be punished with imprisonment for a term which may extend to three years or with fine which may extend to five hundred thousand rupees or with both.
+
+Section 4: Unauthorized copying and transmission of data
+(1) Whoever, without authorization of the owner or the person in charge of an information system, accesses, copies, or transmits any data from an information system or makes any copy of such data is said to commit the offence of unauthorized copying and transmission of data.
+
+(2) Whoever commits the offence under sub-section (1) shall be punished with imprisonment for a term which may extend to three years or with fine which may extend to five hundred thousand rupees or with both.
+
+Section 5: Unauthorized interference with information system
+(1) Whoever, with intent to cause damage or knowing that he is likely to cause damage, without authorization of the owner or the person in charge of an information system, intercepts, interferes with, or obstructs the functioning of an information system is said to commit the offence of unauthorized interference with information system.
+
+(2) Whoever commits the offence under sub-section (1) shall be punished with imprisonment for a term which may extend to three years or with fine which may extend to five hundred thousand rupees or with both.
+
+Section 6: Unauthorized access to code
+(1) Whoever, without authorization of the owner or the person in charge, accesses any computer code designed to cause harm to any information system or data is said to commit the offence of unauthorized access to code.
+
+(2) Whoever commits the offence under sub-section (1) shall be punished with imprisonment for a term which may extend to three years or with fine which may extend to five hundred thousand rupees or with both.
+
+Section 7: Cyber stalking
+(1) Whoever, with the intent to coerce or intimidate or harass any person, uses information system, information system network, the internet, website, electronic mail or any other similar means of communication to:
+    (a) make any communication in an obscene, threatening, or menacing manner;
+    (b) display any obscene photograph, picture, or other image;
+    (c) harm the reputation of a person;
+is said to commit the offence of cyber stalking.
+
+(2) Whoever commits the offence under sub-section (1) shall be punished with imprisonment for a term which may extend to three years or with fine which may extend to one million rupees or with both.
+
+Section 8: Cyber terrorism
+(1) Whoever, with terrorist intent utilizes an information system or electronic device or by any other means, accesses, or causes to be accessed a computer or computer network and:
+    (a) prepares or disseminates information designed to advance publicity for an organization which is enlisted in the First Schedule or Fourth Schedule to the Anti-Terrorism Act, 1997;
+    (b) prepares or disseminates information designed to advance publicity for an act of terrorism;
+    (c) prepares or disseminates information designed to incite or encourage acts of terrorism;
+    (d) prepares or disseminates information designed to intimidate the public or a section of the public;
+is said to commit the offence of cyber terrorism.
+
+(2) Whoever commits the offence under sub-section (1) shall be punished with imprisonment for a term which may extend to fourteen years or with fine which may extend to fifty million rupees or with both.
+
+CHAPTER III - INVESTIGATION AND TRIAL
+
+Section 28: Investigation
+(1) Notwithstanding anything contained in the Code of Criminal Procedure, 1898, the offences under this Act shall be investigated by the Federal Investigation Agency.
+
+(2) The Federal Investigation Agency may, for the purposes of investigation of an offence under this Act, exercise all powers conferred under the Code of Criminal Procedure, 1898.
+
+Section 29: Trial
+(1) Notwithstanding anything contained in the Code of Criminal Procedure, 1898, the offences under this Act shall be tried by a Special Court constituted under this Act.
+
+(2) The Federal Government may, by notification in the official Gazette, constitute one or more Special Courts for the trial of offences under this Act.
+
+CHAPTER IV - MISCELLANEOUS
+
+Section 37: Power to make rules
+The Federal Government may, by notification in the official Gazette, make rules for carrying out the purposes of this Act.
+
+Section 38: Protection of action taken in good faith
+No suit, prosecution or other legal proceeding shall lie against the Federal Government or any officer or authority of the Federal Government for anything which is in good faith done or intended to be done under this Act.
+
+---
+
+Note: This is a simplified sample document for testing purposes. For complete and accurate legal text, please refer to the official PECA 2016 legislation published by the Government of Pakistan.
