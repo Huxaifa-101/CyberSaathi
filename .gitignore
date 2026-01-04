@@ -1,0 +1,359 @@
+# ============================================
+# CyberSaathi - Comprehensive .gitignore
+# ============================================
+
+# ============================================
+# SENSITIVE FILES - NEVER COMMIT
+# ============================================
+*.env
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+**/.env
+**/.env.local
+
+# API Keys and Secrets
+secrets/
+*.key
+*.pem
+*.p12
+*.pfx
+credentials.json
+service-account.json
+
+# ============================================
+# PYTHON BACKEND
+# ============================================
+
+# Virtual Environments
+venv/
+venv_new/
+env/
+ENV/
+.venv/
+*.venv/
+virtualenv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / Packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath
+*.sage.py
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# mkdocs
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# pytype
+.pytype/
+
+# Cython
+cython_debug/
+
+# ============================================
+# DATABASES & VECTOR STORES
+# ============================================
+
+# ChromaDB
+**/chroma_db/
+**/data/chroma_db/
+*.chroma
+chroma.sqlite3
+
+# SQLite
+*.db
+*.sqlite
+*.sqlite3
+
+# PostgreSQL
+*.sql.backup
+*.dump
+
+# ============================================
+# LOGS & TEMPORARY FILES
+# ============================================
+
+# Log files
+logs/
+*.log
+*.log.*
+log/
+*.log.txt
+pii_redactions.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# ============================================
+# FRONTEND (React + Vite)
+# ============================================
+
+# Dependencies
+node_modules/
+jspm_packages/
+bower_components/
+
+# Production builds
+dist/
+dist-ssr/
+build/
+out/
+
+# Testing
+coverage/
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist
+
+# Misc
+.DS_Store
+*.pem
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# ============================================
+# OPERATING SYSTEM FILES
+# ============================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ============================================
+# IDEs & EDITORS
+# ============================================
+
+# VSCode
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+*.code-workspace
+
+# JetBrains (PyCharm, WebStorm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ============================================
+# PROJECT SPECIFIC
+# ============================================
+
+# Raw data files (keep structure, ignore content)
+**/data/raw/*.pdf
+**/data/raw/*.docx
+**/data/raw/*.txt
+**/data/raw/*.doc
+
+# Processed data
+**/data/processed/
+
+# Model checkpoints
+models/
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+*.h5
+*.pkl
+*.pickle
+
+# Ngrok
+ngrok
+ngrok.exe
+ngrok.yml
+
+# Documentation builds
+docs/_build/
+docs/.doctrees/
+
+# Backup files
+*.bak
+*.backup
+*~.nib
+
+# ============================================
+# KEEP THESE FILES
+# ============================================
+
+# Keep directory structure
+!**/data/raw/.gitkeep
+!**/data/processed/.gitkeep
+!**/logs/.gitkeep
+!**/models/.gitkeep
+
+# Keep example environment files
+!.env.example
+!**/.env.example
+
+# Keep documentation
+!README.md
+!CONTRIBUTING.md
+!CODE_OF_CONDUCT.md
+!LICENSE
+!CHANGELOG.md
