@@ -890,7 +890,7 @@ We welcome contributions! Here's how you can help:
 
 ## 📄 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **MY License**.
 
 ```
 MIT License
@@ -934,8 +934,7 @@ SOFTWARE.
 For questions, suggestions, or support:
 
 - **GitHub Issues**: [Create an issue](https://github.com/yourusername/CyberSaathi/issues)
-- **Email**: your.email@example.com
-- **Twitter**: [@yourusername](https://twitter.com/yourusername)
+- **Email**: huzaifasajidkhokhar@gmail.com
 
 ---
 
